@@ -16,9 +16,9 @@ export default defineConfig([
   tseslint.configs.recommended,
   {
     rules: {
-      "no-unused-vars": "warn",
-      "semi": "error",
-      "quotes": ["error", "double"],
+      "no-unused-vars": "off",
+      semi: "error",
+      quotes: ["error", "double"],
     },
   },
 ]);
