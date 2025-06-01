@@ -19,6 +19,31 @@ app.get("/movies", async (_, res) => {
   res.json(movies);
 });
 
+app.get("/movies/:genderName", async (req, res) => {
+  try {
+    const moviesFilteredByGenderName = await prisma.movie.findMany({
+      include: {
+        genres: true,
+        languages: true
+      },
+      where: {
+        genres: {
+          name: {
+            equals: req.params.genderName,
+            mode: "insensitive"
+          }
+        }
+      }
+    });
+
+    res.status(200).send(moviesFilteredByGenderName);
+  } catch(error) {
+    console.error(error);
+    
+    res.status(500).send({message: "Falha ao buscar filme"});
+  }
+});
+
 // prepara o servidor para receber dados em json
 app.use(express.json());
 
