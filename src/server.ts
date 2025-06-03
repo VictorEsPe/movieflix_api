@@ -1,9 +1,14 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "../swagger.json";
 
 const app = express();
 const prisma = new PrismaClient();
 const port = 3000;
+
+app.use(express.json());  // prepara o servidor para receber dados em json
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // o underline indica que o parâmetro req não é necessário no endpoint
 app.get("/movies", async (_, res) => {
@@ -43,9 +48,6 @@ app.get("/movies/:genderName", async (req, res) => {
     res.status(500).send({message: "Falha ao buscar filme"});
   }
 });
-
-// prepara o servidor para receber dados em json
-app.use(express.json());
 
 app.post("/movies", async (req, res) => {
   const { title, genre_id, language_id, oscar_count, release_date } = req.body;
